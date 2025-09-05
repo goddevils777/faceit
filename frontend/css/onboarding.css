@@ -1,0 +1,225 @@
+/* Стили компонента онбординга */
+.onboarding-wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0d1421 100%);
+    padding: 20px;
+}
+
+.onboarding-container {
+    width: 90%;
+    max-width: 400px;
+    height: 80vh;
+    background: linear-gradient(145deg, #1e1e1e 0%, #2a2a2a 100%);
+    border: 2px solid #ff6b35;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.3), 0 10px 30px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+    position: relative;
+}
+
+.onboarding-slide {
+    width: 100%;
+    height: 100%;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    animation: slideIn 0.4s ease-out;
+}
+
+.slide-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Сетка скриншотов для первого слайда */
+.screenshots-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.map-screenshot {
+    width: 100%;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #ff6b35;
+    box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.map-screenshot:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 107, 53, 0.6);
+}
+
+/* Одиночный скриншот */
+.feature-screenshot {
+    width: 100%;
+    height: 280px;
+    border-radius: 15px;
+    object-fit: cover;
+    margin-bottom: 30px;
+    border: 2px solid #ff6b35;
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.feature-screenshot:hover {
+    transform: scale(1.02);
+}
+
+/* Текст слайда */
+.slide-text {
+    font-size: 18px;
+    color: #ffffff;
+    line-height: 1.5;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    margin: 0;
+}
+
+/* Кнопки */
+.next-button, .start-button {
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.next-button {
+    background: linear-gradient(145deg, #ff6b35 0%, #ff8c42 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+}
+
+.next-button:hover {
+    background: linear-gradient(145deg, #ff8c42 0%, #ff6b35 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+}
+
+.start-button {
+    background: linear-gradient(145deg, #00ff88 0%, #00cc6a 100%);
+    color: #000;
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+    padding: 18px 40px;
+    font-size: 18px;
+}
+
+.start-button:hover {
+    background: linear-gradient(145deg, #00cc6a 0%, #00ff88 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.6);
+}
+
+.start-button:active, .next-button:active {
+    transform: translateY(-1px);
+}
+
+/* Точки навигации */
+.onboarding-dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.dot.active {
+    background: #ff6b35;
+    border-color: #ff6b35;
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+}
+
+.dot:hover {
+    background: #ff6b35;
+    transform: scale(1.2);
+}
+
+/* Анимации */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .onboarding-container {
+        width: 95%;
+        height: 85vh;
+    }
+    
+    .onboarding-slide {
+        padding: 30px 20px;
+    }
+    
+    .screenshots-grid {
+        gap: 10px;
+    }
+    
+    .map-screenshot {
+        height: 100px;
+    }
+    
+    .feature-screenshot {
+        height: 240px;
+    }
+    
+    .slide-text {
+        font-size: 16px;
+    }
+    
+    .next-button, .start-button {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 320px) {
+    .map-screenshot {
+        height: 80px;
+    }
+    
+    .feature-screenshot {
+        height: 200px;
+    }
+    
+    .slide-text {
+        font-size: 14px;
+    }
+}
