@@ -81,7 +81,7 @@ const config = {
 
     // ELO система
     ELO: {
-        DEFAULT_ELO: parseInt(process.env.DEFAULT_ELO) || 1000,
+        DEFAULT_ELO: parseInt(process.env.DEFAULT_ELO) || 250,
         MIN_ELO: parseInt(process.env.MIN_ELO) || 100,
         MAX_ELO: parseInt(process.env.MAX_ELO) || 3000,
         K_FACTOR: parseFloat(process.env.ELO_K_FACTOR) || 32,

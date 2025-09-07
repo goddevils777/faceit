@@ -2,7 +2,7 @@
 class MainMenuComponent {
     constructor() {
         this.container = null;
-        this.currentUser = AuthService.getCurrentUser();
+        this.currentUser = window.AuthService.getCurrentUser()
     }
 
     // Рендер компонента
@@ -25,7 +25,7 @@ class MainMenuComponent {
                     <div class="header-content">
                         <div class="user-info">
                             <div class="user-avatar">
-                                <img src="frontend/assets/images/logo.png" alt="Avatar" class="avatar-img">
+                                <img src="assets/images/logo.png" alt="Avatar" class="avatar-img">
                             </div>
                             <div class="user-details">
                                 <h3 class="username">${this.currentUser?.username || 'Player'}</h3>
@@ -71,30 +71,28 @@ class MainMenuComponent {
                 </main>
 
                 <!-- Нижняя навигация -->
-                <nav class="bottom-navigation">
-                    <div class="nav-items">
-                        <button class="nav-item active" data-route="/main">
-                            <span class="nav-icon">🏠</span>
-                            <span class="nav-label">Главное меню</span>
-                        </button>
-                        <button class="nav-item" data-route="/matchmaking">
-                            <span class="nav-icon">⚔️</span>
-                            <span class="nav-label">Подбор матча</span>
-                        </button>
-                        <button class="nav-item" data-route="/leaderboard">
-                            <span class="nav-icon">🏆</span>
-                            <span class="nav-label">Топ игроков</span>
-                        </button>
-                        <button class="nav-item" data-route="/news">
-                            <span class="nav-icon">📰</span>
-                            <span class="nav-label">Новости</span>
-                        </button>
-                        <button class="nav-item" data-route="/settings">
-                            <span class="nav-icon">⚙️</span>
-                            <span class="nav-label">Настройки</span>
-                        </button>
-                    </div>
-                </nav>
+            <nav class="bottom-navigation">
+                <div class="nav-item active" data-route="/main">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Главная</span>
+                </div>
+                <div class="nav-item" data-route="/matchmaking">
+                    <span class="nav-icon">⚔️</span>
+                    <span class="nav-label">Матчи</span>
+                </div>
+                <div class="nav-item" data-route="/leaderboard">
+                    <span class="nav-icon">🏆</span>
+                    <span class="nav-label">Топ</span>
+                </div>
+                <div class="nav-item" data-route="/news">
+                    <span class="nav-icon">📰</span>
+                    <span class="nav-label">Новости</span>
+                </div>
+                <div class="nav-item" data-route="/settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label">Настройки</span>
+                </div>
+            </nav>
             </div>
         `;
     }
@@ -168,12 +166,11 @@ class MainMenuComponent {
         activeItem.classList.add('active');
     }
 
-    // Обработка выхода
-    handleLogout() {
-        AuthService.logout();
-        app.showNotification('Вы вышли из системы', 'info');
-        router.navigate('/auth');
-    }
+handleLogout() {
+    window.AuthService.logout();
+    app.showNotification('Вы вышли из системы', 'info');
+    router.navigate('/auth');
+}
 
     // Уничтожение компонента
     destroy() {

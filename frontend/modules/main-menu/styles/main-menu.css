@@ -1,40 +1,106 @@
-/* Стили главного меню */
+/* Современные игровые стили главного меню */
 .main-menu-wrapper {
-    width: 100%;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    width: 100vw;
+    height: 100vh; /* Фиксированная высота вместо min-height */
+    background: 
+        linear-gradient(135deg, #667eea 0%, #764ba2 100%),
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 48, 0.3) 0%, transparent 50%);
+    background-blend-mode: overlay, normal, normal;
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: hidden; /* Убираем overflow-x: hidden, оставляем просто hidden */
+}
+
+.main-menu-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    pointer-events: none;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(10px, 10px); }
 }
 
 /* Заголовок */
 .main-header {
-    background: #ffffff;
-    border-bottom: 2px solid var(--border-color);
-    padding: 20px;
-    box-shadow: 0 2px 10px var(--shadow-dark);
+    background: linear-gradient(135deg, rgba(15, 15, 35, 0.9) 0%, rgba(30, 30, 60, 0.9) 100%);
+    border-bottom: 3px solid var(--primary-color);
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 10;
+    width: 100%;
+}
+
+.main-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(25, 113, 229, 0.1), transparent);
+    animation: scan 3s ease-in-out infinite;
+}
+
+@keyframes scan {
+    0%, 100% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
 }
 
 .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 100%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
 }
 
 .user-avatar {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid var(--primary-color);
+    border: 4px solid var(--primary-color);
+    box-shadow: 0 0 30px rgba(25, 113, 229, 0.6);
+    position: relative;
+}
+
+.user-avatar::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    background: conic-gradient(var(--primary-color), var(--secondary-color), var(--primary-color));
+    z-index: -1;
+    animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .avatar-img {
@@ -46,165 +112,232 @@
 .user-details {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
 }
 
 .username {
     font-family: 'Orbitron', sans-serif;
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #ffffff;
     margin: 0;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    background: linear-gradient(45deg, #ffffff, var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .user-stats {
     display: flex;
     gap: 15px;
-    font-size: 14px;
-    color: var(--text-secondary);
+    font-size: 16px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+}
+
+.elo, .level {
+    padding: 8px 16px;
+    border-radius: 25px;
+    border: 2px solid transparent;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
 }
 
 .elo {
-    font-weight: 600;
+    background: linear-gradient(135deg, rgba(25, 113, 229, 0.2) 0%, rgba(25, 113, 229, 0.1) 100%);
     color: var(--primary-color);
+    border-color: rgba(25, 113, 229, 0.3);
+    box-shadow: 0 0 20px rgba(25, 113, 229, 0.3);
 }
 
 .level {
-    font-weight: 600;
+    background: linear-gradient(135deg, rgba(85, 231, 155, 0.2) 0%, rgba(85, 231, 155, 0.1) 100%);
     color: var(--secondary-color);
+    border-color: rgba(85, 231, 155, 0.3);
+    box-shadow: 0 0 20px rgba(85, 231, 155, 0.3);
 }
 
 .header-actions {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     align-items: center;
 }
 
 .settings-btn, .logout-btn {
-    padding: 10px 20px;
+    padding: 15px 25px;
     border: none;
-    border-radius: 8px;
-    font-family: 'Exo 2', sans-serif;
+    border-radius: 25px;
+    font-family: 'Orbitron', sans-serif;
     font-weight: 600;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
 }
 
 .settings-btn {
-    background: var(--bg-light);
-    color: var(--text-primary);
-    border: 2px solid var(--border-color);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .settings-btn:hover {
     border-color: var(--primary-color);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(25, 113, 229, 0.4);
+    color: var(--primary-color);
 }
 
 .logout-btn {
-    background: linear-gradient(145deg, #ff4757 0%, #ff3838 100%);
+    background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+    box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
 }
 
 .logout-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(255, 71, 87, 0.6);
 }
 
 /* Основной контент */
 .main-content {
     flex: 1;
-    padding: 30px 20px 100px;
+    padding: 40px 20px 140px; /* Увеличим нижний отступ */
     overflow-y: auto;
+    width: 100%;
+    position: relative;
+    z-index: 5;
+    scroll-behavior: smooth; /* Добавим плавный скролл */
 }
 
 .content-container {
-    max-width: 1200px;
+    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 /* Информация о платформе */
 .platform-info {
-    background: #ffffff;
+    background: linear-gradient(135deg, rgba(15, 15, 35, 0.8) 0%, rgba(30, 30, 60, 0.8) 100%);
     border: 2px solid var(--primary-color);
-    border-radius: 15px;
-    padding: 30px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px var(--shadow-primary);
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+.platform-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(25, 113, 229, 0.1) 50%, transparent 70%);
+    animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
 }
 
 .platform-info h2 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin: 0 0 20px 0;
+    font-size: 48px;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 0 0 25px 0;
     text-align: center;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(25, 113, 229, 0.5);
+    animation: glow 2s ease-in-out infinite alternate;
 }
 
 .platform-description {
     font-family: 'Exo 2', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--text-primary);
+    font-size: 18px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
     margin: 0;
     text-align: justify;
+    position: relative;
+    z-index: 2;
 }
 
 /* Система уровней */
 .levels-system {
-    background: #ffffff;
+    background: linear-gradient(135deg, rgba(15, 15, 35, 0.8) 0%, rgba(30, 30, 60, 0.8) 100%);
     border: 2px solid var(--secondary-color);
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 4px 15px var(--shadow-secondary);
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
 }
 
 .levels-system h3 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 28px;
+    font-size: 36px;
     font-weight: 700;
     color: var(--secondary-color);
-    margin: 0 0 15px 0;
+    margin: 0 0 20px 0;
     text-align: center;
+    text-shadow: 0 0 20px rgba(85, 231, 155, 0.5);
 }
 
 .levels-intro {
     font-family: 'Exo 2', sans-serif;
-    font-size: 16px;
-    color: var(--text-primary);
-    margin: 0 0 25px 0;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 30px 0;
     text-align: center;
+    line-height: 1.6;
 }
 
 .levels-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
 }
 
-/* Карточки уровней */
 .level-card {
-    background: var(--bg-medium);
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
+    background: linear-gradient(135deg, rgba(20, 20, 40, 0.9) 0%, rgba(40, 40, 70, 0.9) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
 }
 
 .level-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px var(--shadow-dark);
+    transform: translateY(-8px);
     border-color: var(--primary-color);
+    box-shadow: 0 20px 50px rgba(25, 113, 229, 0.3);
 }
 
 .level-card.current-level {
     border-color: var(--secondary-color);
-    background: linear-gradient(145deg, rgba(85, 231, 155, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
-    box-shadow: 0 4px 15px var(--shadow-secondary);
+    box-shadow: 0 0 40px rgba(85, 231, 155, 0.4);
+    background: linear-gradient(135deg, rgba(85, 231, 155, 0.2) 0%, rgba(85, 231, 155, 0.1) 100%);
 }
 
 .level-header {
@@ -216,171 +349,175 @@
 
 .level-number {
     font-family: 'Orbitron', sans-serif;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(25, 113, 229, 0.5);
 }
 
 .level-elo {
     font-family: 'Exo 2', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
-    color: var(--text-secondary);
-    background: var(--bg-light);
-    padding: 5px 10px;
-    border-radius: 15px;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .level-description {
     font-family: 'Exo 2', sans-serif;
     font-size: 14px;
     line-height: 1.5;
-    color: var(--text-primary);
+    color: rgba(255, 255, 255, 0.7);
     margin: 0;
 }
 
 .current-level-badge {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--secondary-color);
+    top: -2px;
+    right: -2px;
+    background: linear-gradient(45deg, var(--secondary-color), #ffa000);
     color: #000;
+    padding: 10px 18px;
+    border-radius: 0 20px 0 20px;
     font-family: 'Orbitron', sans-serif;
     font-size: 12px;
     font-weight: 700;
-    padding: 5px 10px;
-    border-radius: 15px;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Нижняя навигация */
+/* Фиксированная нижняя навигация */
 .bottom-navigation {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: #ffffff;
-    border-top: 2px solid var(--border-color);
-    padding: 10px 20px;
-    box-shadow: 0 -2px 10px var(--shadow-dark);
-    z-index: 1000;
-}
-
-.nav-items {
-    max-width: 1200px;
-    margin: 0 auto;
+    background: linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(30, 30, 60, 0.95) 100%);
+    border-top: 3px solid var(--primary-color);
+    padding: 15px 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
 }
 
-.nav-item {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 12px;
-    transition: all 0.3s ease;
+.bottom-navigation .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    min-width: 80px;
+    gap: 6px;
+    padding: 12px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-decoration: none;
+    min-width: 70px;
+    background: transparent;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
 }
 
-.nav-item:hover {
-    background: var(--bg-light);
+.bottom-navigation .nav-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 18px;
+}
+
+.bottom-navigation .nav-item:hover {
+    color: #ffffff;
+    transform: translateY(-4px);
+}
+
+.bottom-navigation .nav-item:hover::before {
+    opacity: 0.1;
+}
+
+.bottom-navigation .nav-item.active {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 25px rgba(25, 113, 229, 0.4);
     transform: translateY(-2px);
 }
 
-.nav-item.active {
-    background: linear-gradient(145deg, var(--primary-color) 0%, var(--primary-hover) 100%);
-    color: white;
-    box-shadow: 0 4px 15px var(--shadow-primary);
-}
-
-.nav-icon {
-    font-size: 24px;
+.bottom-navigation .nav-icon {
+    font-size: 26px;
     line-height: 1;
+    position: relative;
+    z-index: 2;
 }
 
-.nav-label {
-    font-family: 'Exo 2', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    text-align: center;
+.bottom-navigation .nav-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     line-height: 1;
-}
-
-.nav-item.active .nav-label {
-    color: white;
+    position: relative;
+    z-index: 2;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
     .header-content {
         flex-direction: column;
-        gap: 15px;
+        gap: 20px;
         text-align: center;
     }
-
+    
     .user-info {
         flex-direction: column;
-        text-align: center;
+        gap: 15px;
     }
-
-    .platform-info, .levels-system {
-        padding: 20px;
+    
+    .user-avatar {
+        width: 70px;
+        height: 70px;
     }
-
-    .platform-info h2 {
-        font-size: 28px;
-    }
-
-    .levels-system h3 {
+    
+    .username {
         font-size: 24px;
     }
-
+    
+    .platform-info h2 {
+        font-size: 36px;
+    }
+    
+    .levels-system h3 {
+        font-size: 28px;
+    }
+    
     .levels-grid {
         grid-template-columns: 1fr;
     }
-
-    .nav-label {
+    
+    .bottom-navigation {
+        padding: 12px 10px;
+    }
+    
+    .bottom-navigation .nav-item {
+        min-width: 60px;
+        padding: 10px 12px;
+    }
+    
+    .bottom-navigation .nav-icon {
+        font-size: 22px;
+    }
+    
+    .bottom-navigation .nav-label {
         font-size: 10px;
-    }
-
-    .nav-icon {
-        font-size: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .main-content {
-        padding: 20px 15px 100px;
-    }
-
-    .platform-info, .levels-system {
-        padding: 15px;
-    }
-
-    .platform-info h2 {
-        font-size: 24px;
-    }
-
-    .levels-system h3 {
-        font-size: 20px;
-    }
-
-    .level-card {
-        padding: 15px;
-    }
-
-    .user-avatar {
-        width: 50px;
-        height: 50px;
-    }
-
-    .username {
-        font-size: 18px;
     }
 }

@@ -19,7 +19,7 @@ class Router {
 
         // Обработка изменения URL
         window.addEventListener('popstate', () => this.handleRoute());
-        
+
         // Загрузка начального маршрута
         this.handleRoute();
     }
@@ -41,7 +41,7 @@ class Router {
     handleRoute() {
         const path = window.location.pathname;
         const handler = this.routes.get(path);
-        
+
         if (handler) {
             this.currentRoute = path;
             handler();
@@ -63,22 +63,22 @@ class Router {
     }
 
     async loadMainMenu() {
-        // Проверка авторизации
-        if (!AuthService.isAuthenticated()) {
+        // Ждем готовности AuthService
+        if (!window.AuthService || !window.AuthService.isAuthenticated()) {
             this.navigate('/auth');
             return;
         }
-        
+
         const mainMenu = new MainMenuComponent();
         await mainMenu.render();
     }
 
     async loadMatchmaking() {
-        if (!AuthService.isAuthenticated()) {
+        if (!window.AuthService.isAuthenticated()) {
             this.navigate('/auth');
             return;
         }
-        
+
         const matchmaking = new MatchmakingComponent();
         await matchmaking.render();
     }
@@ -92,17 +92,16 @@ class Router {
         const news = new NewsComponent();
         await news.render();
     }
-
     async loadSettings() {
-        if (!AuthService.isAuthenticated()) {
+        if (!window.AuthService.isAuthenticated()) {
             this.navigate('/auth');
             return;
         }
-        
+
         const settings = new SettingsComponent();
         await settings.render();
     }
 }
 
 // Создание глобального экземпляра роутера
-window.router = new Router();
+window.Router = Router;

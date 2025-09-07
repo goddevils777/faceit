@@ -403,6 +403,8 @@ class AuthComponent {
                 </label>
             </div>
 
+            
+
             <button type="submit" class="btn btn-primary auth-submit-btn" id="submit-btn">
                 Войти
             </button>

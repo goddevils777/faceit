@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const AuthMiddleware = require('../middleware/auth');
 const ValidationMiddleware = require('../middleware/validation');
+const User = require('../models/User');
 
 // Регистрация пользователя
 router.post('/register', 
@@ -11,28 +12,43 @@ router.post('/register',
     async (req, res) => {
         console.log('=== REGISTRATION ATTEMPT ===');
         console.log('Request body:', req.body);
-        console.log('Headers:', req.headers);
         
         try {
             const { username, email, password, region } = req.body;
             console.log('Extracted data:', { username, email, region, passwordLength: password?.length });
 
-            // Временная заглушка - в реальном проекте здесь будет работа с БД
-            const hashedPassword = await AuthMiddleware.hashPassword(password);
+            // Проверка на существующего пользователя
+            const existingUser = await User.findOne({
+                where: {
+                    [require('sequelize').Op.or]: [
+                        { username },
+                        { email }
+                    ]
+                }
+            });
 
-            // Симуляция создания пользователя
-            const newUser = {
-                id: 'user_' + Date.now(),
+            if (existingUser) {
+                return res.status(400).json({
+                    success: false,
+                    error: existingUser.username === username ? 
+                        'Пользователь с таким именем уже существует' : 
+                        'Пользователь с таким email уже существует',
+                    code: 'USER_EXISTS'
+                });
+            }
+
+            // Создание пользователя в БД
+            const newUser = await User.create({
                 username,
                 email,
-                region,
-                elo: 1000,
-                level: 1,
-                createdAt: new Date()
-            };
+                password,
+                region
+            });
+
+            console.log('User created successfully:', newUser.id);
 
             // Генерация токенов
-            const tokens = AuthMiddleware.generateTokenPair(newUser.id, 'user');
+            const tokens = AuthMiddleware.generateTokenPair(newUser.id, newUser.role);
 
             res.status(201).json({
                 success: true,
@@ -63,50 +79,62 @@ router.post('/register',
         }
     }
 );
-
 // Вход пользователя
 router.post('/login',
     ValidationMiddleware.validateLogin,
     AuthMiddleware.rateLimitAuth(),
     async (req, res) => {
         try {
-            const { login, password, remember } = req.body;
+            const { login, password } = req.body;
 
-            // Временная заглушка - в реальном проекте поиск в БД
-            if (login === 'demo@smartfaceit.com' && password === 'demo123') {
-                const user = {
-                    id: 'demo_user_123',
-                    username: 'DemoPlayer',
-                    email: 'demo@smartfaceit.com',
-                    region: 'europe',
-                    elo: 1250,
-                    level: 6
-                };
-
-                // Генерация токенов
-                const tokens = AuthMiddleware.generateTokenPair(user.id, 'user');
-
-                if (req.clearFailedAttempts) {
-                    req.clearFailedAttempts();
+            // Поиск пользователя по email или username
+            const user = await User.findOne({
+                where: {
+                    [require('sequelize').Op.or]: [
+                        { username: login },
+                        { email: login }
+                    ]
                 }
+            });
 
-                res.json({
-                    success: true,
-                    message: 'Успешная авторизация',
-                    user,
-                    ...tokens
-                });
-            } else {
-                if (req.recordFailedAttempt) {
-                    req.recordFailedAttempt();
-                }
-
-                res.status(401).json({
+            if (!user) {
+                return res.status(401).json({
                     success: false,
-                    error: 'Неверные учетные данные',
+                    error: 'Неверные данные входа',
                     code: 'INVALID_CREDENTIALS'
                 });
             }
+
+            // Проверка пароля БЕЗ дополнительного хеширования
+            const isValidPassword = await user.validatePassword(password);
+            if (!isValidPassword) {
+                return res.status(401).json({
+                    success: false,
+                    error: 'Неверные данные входа',
+                    code: 'INVALID_CREDENTIALS'
+                });
+            }
+
+            // Генерация токенов
+            const tokens = AuthMiddleware.generateTokenPair(user.id, user.role);
+
+            if (req.clearFailedAttempts) {
+                req.clearFailedAttempts();
+            }
+
+            res.json({
+                success: true,
+                message: 'Вход выполнен успешно',
+                user: {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                    region: user.region,
+                    elo: user.elo,
+                    level: user.level
+                },
+                ...tokens
+            });
 
         } catch (error) {
             console.error('Login error:', error);
@@ -124,29 +152,39 @@ router.post('/login',
     }
 );
 
-// Обновление токена
-router.post('/refresh', AuthMiddleware.refreshToken);
-
-// Выход из системы
-router.post('/logout', AuthMiddleware.authenticate, AuthMiddleware.logout);
-
-// Проверка токена
-router.get('/validate', AuthMiddleware.authenticate, (req, res) => {
-    res.json({
-        valid: true,
-        user: {
-            id: req.user.id,
-            role: req.user.role
+// Валидация токена
+// Валидация токена
+router.get('/validate', AuthMiddleware.authenticate, async (req, res) => {
+    try {
+        // Ищем пользователя в БД
+        const user = await User.findByPk(req.user.userId);
+        
+        if (!user || !user.isActive) {
+            return res.status(401).json({
+                valid: false,
+                error: 'Пользователь не найден'
+            });
         }
-    });
-});
 
-// Забыли пароль (заглушка)
-router.post('/forgot-password', (req, res) => {
-    res.json({
-        success: true,
-        message: 'Инструкции по восстановлению пароля отправлены на email'
-    });
+        res.json({
+            valid: true,
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                region: user.region,
+                elo: user.elo,
+                level: user.level
+            }
+        });
+
+    } catch (error) {
+        console.error('Token validation error:', error);
+        res.status(500).json({
+            valid: false,
+            error: 'Ошибка валидации токена'
+        });
+    }
 });
 
 module.exports = router;

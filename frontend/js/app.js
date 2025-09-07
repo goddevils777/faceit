@@ -23,7 +23,7 @@ class SmartFaceitApp {
             this.initRouter();
             
             // Проверка авторизации
-            await this.checkAuthentication();
+            await this.checkAuth();
             
             // Установка обработчиков событий
             this.setupEventListeners();
@@ -41,22 +41,21 @@ class SmartFaceitApp {
     }
 
     // Инициализация сервисов
-    async initServices() {
-        // Проверка доступности API
-        try {
-            await this.checkApiHealth();
-        } catch (error) {
-            console.warn('API недоступно, работаем в оффлайн режиме');
-        }
-
-        // Инициализация AuthService если не инициализирован
-        if (!window.AuthService) {
-            window.AuthService = new AuthService();
-        }
-
-        // Инициализация других сервисов
-        this.initNotificationService();
+async initServices() {
+    // Проверка доступности API
+    try {
+        await this.checkApiHealth();
+    } catch (error) {
+        console.warn('API недоступно, работаем в оффлайн режиме');
     }
+
+    // Создаем AuthService только один раз
+    window.AuthService = new AuthService();
+    await window.AuthService.init();
+
+    // Инициализация других сервисов
+    this.initNotificationService();
+}
 
     // Проверка состояния API
     async checkApiHealth() {
@@ -73,28 +72,34 @@ class SmartFaceitApp {
     }
 
     // Инициализация роутера
-    initRouter() {
-        if (!window.router) {
-            window.router = new Router();
-        }
-    }
-
-    // Проверка авторизации при загрузке
-// Проверка авторизации при загрузке
-async checkAuthentication() {
-    console.log('Checking authentication...');
-    console.log('window.AuthService:', window.AuthService);
-    console.log('AuthService type:', typeof AuthService);
-    console.log('AuthService.isAuthenticated:', typeof AuthService?.isAuthenticated);
-    
-    if (AuthService && typeof AuthService.isAuthenticated === 'function' && AuthService.isAuthenticated()) {
-        this.currentUser = AuthService.getCurrentUser();
-        console.log('Пользователь авторизован:', this.currentUser?.username);
-    } else {
-        console.log('Пользователь не авторизован');
-    }
+initRouter() {
+    window.router = new Router();
 }
 
+    // Проверка авторизации при загрузке
+// Проверка авторизации
+async checkAuth() {
+    console.log('Checking authentication...');
+    console.log('window.AuthService:', window.AuthService);
+    console.log('AuthService type:', typeof window.AuthService);
+    
+    // Проверяем, что AuthService инициализирован
+    if (!window.AuthService || typeof window.AuthService.isAuthenticated !== 'function') {
+        console.log('AuthService не инициализирован, пользователь не авторизован');
+        this.currentUser = null;
+        return false;
+    }
+    
+    if (window.AuthService.isAuthenticated()) {
+        this.currentUser = window.AuthService.getCurrentUser();
+        console.log('Пользователь авторизован:', this.currentUser);
+        return true;
+    } else {
+        console.log('Пользователь не авторизован');
+        this.currentUser = null;
+        return false;
+    }
+}
     // Установка глобальных обработчиков событий
     setupEventListeners() {
         // Обработка кликов по ссылкам

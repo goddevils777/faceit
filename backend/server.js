@@ -15,6 +15,9 @@ const gameRoutes = require('./routes/game');
 const AuthMiddleware = require('./middleware/auth');
 const SecurityMiddleware = require('./middleware/security');
 
+const { sequelize, testConnection } = require('../database/database');
+const User = require('./models/User');
+
 class SmartFaceitServer {
     constructor() {
         this.app = express();
@@ -53,8 +56,10 @@ class SmartFaceitServer {
 
         this.app.use('/api/', limiter);
 
-        // Логирование
-        this.app.use(morgan('combined'));
+        // Логирование (только в development)
+        if (config.NODE_ENV === 'development') {
+            this.app.use(morgan('dev')); // Короткий формат вместо 'combined'
+        }
 
         // Парсинг JSON
         this.app.use(express.json({ limit: '10mb' }));
@@ -149,18 +154,36 @@ class SmartFaceitServer {
     }
 
     // Запуск сервера
-    start() {
-        this.server = this.app.listen(this.port, () => {
-            console.log(`🚀 Smart Gaming Server запущен на порту ${this.port}`);
-            console.log(`📝 Режим: ${config.NODE_ENV}`);
-            console.log(`🌐 API: http://localhost:${this.port}/api`);
-            console.log(`🎮 Frontend: http://localhost:${this.port}`);
-            console.log(`💚 Health check: http://localhost:${this.port}/api/health`);
-        });
+    async start() {
+        try {
+            // Проверка подключения к БД
+            const dbConnected = await testConnection();
+            if (!dbConnected) {
+                console.error('❌ Не удалось подключиться к базе данных');
+                process.exit(1);
+            }
 
-        // Graceful shutdown
-        process.on('SIGTERM', () => this.gracefulShutdown());
-        process.on('SIGINT', () => this.gracefulShutdown());
+            // Синхронизация моделей с БД
+            await sequelize.sync({ alter: true });
+            console.log('✅ База данных синхронизирована');
+
+            this.server = this.app.listen(this.port, () => {
+                console.log(`🚀 Smart Gaming Server запущен на порту ${this.port}`);
+                console.log(`📝 Режим: ${config.NODE_ENV}`);
+                console.log(`🗄️ База данных: PostgreSQL подключена`);
+                console.log(`🌐 API: http://localhost:${this.port}/api`);
+                console.log(`🎮 Frontend: http://localhost:${this.port}`);
+                console.log(`💚 Health check: http://localhost:${this.port}/api/health`);
+            });
+
+            // Graceful shutdown
+            process.on('SIGTERM', () => this.gracefulShutdown());
+            process.on('SIGINT', () => this.gracefulShutdown());
+
+        } catch (error) {
+            console.error('❌ Ошибка запуска сервера:', error);
+            process.exit(1);
+        }
     }
 
     // Graceful shutdown
