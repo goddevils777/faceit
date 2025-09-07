@@ -5,7 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-medium) 50%, #0d1421 100%);
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
     padding: 20px;
     position: relative;
 }
@@ -13,7 +13,7 @@
 .auth-container {
     width: 100%;
     max-width: 450px;
-    background: linear-gradient(145deg, #1e1e1e 0%, #2a2a2a 100%);
+    background: #ffffff;
     border: 2px solid var(--primary-color);
     border-radius: 20px;
     padding: 40px 30px;
@@ -27,18 +27,115 @@
     margin-bottom: 30px;
 }
 
+/* Логотип */
+.auth-logo-img {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    display: block;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px var(--shadow-primary);
+}
+
 .auth-logo {
-    font-size: 32px;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-bottom: 8px;
-    text-shadow: 0 0 20px var(--shadow-primary);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .auth-subtitle {
     color: var(--text-secondary);
     font-size: 16px;
     margin: 0;
+}
+
+/* Экран выбора способа входа */
+.auth-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.selection-button {
+    width: 100%;
+    padding: 18px 24px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.selection-button.primary-btn {
+    background: linear-gradient(145deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    color: white;
+    box-shadow: 0 4px 15px var(--shadow-primary);
+}
+
+.selection-button.primary-btn:hover {
+    background: linear-gradient(145deg, var(--primary-hover) 0%, var(--primary-color) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--shadow-primary);
+}
+
+.selection-button.social-btn {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+.selection-button.social-btn:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 15px var(--shadow-primary);
+    transform: translateY(-2px);
+}
+
+.selection-button.forgot-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.selection-button.forgot-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Группировка социальных кнопок в экране выбора */
+.auth-selection .social-buttons-row {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.auth-selection .social-buttons-row .selection-button {
+    flex: 1;
+    min-width: 0;
+}
+
+.auth-selection .social-buttons-row .selection-button .social-logo {
+    width: 20px;
+    height: 20px;
 }
 
 /* Табы */
@@ -75,14 +172,18 @@
     background: rgba(255, 107, 53, 0.1);
 }
 
-/* Социальная авторизация */
-.social-auth {
-    display: flex;
-    gap: 15px;
+/* Социальные кнопки в форме */
+.form-social-auth {
     margin-bottom: 20px;
 }
 
-.social-button {
+.form-social-auth .social-buttons-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-social-auth .social-button {
     flex: 1;
     display: flex;
     align-items: center;
@@ -99,21 +200,37 @@
     font-size: 14px;
 }
 
-.social-button:hover {
+.form-social-auth .social-button:hover {
     border-color: var(--primary-color);
     background: var(--bg-light);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.google-btn:hover {
+.form-social-auth .google-btn:hover {
     border-color: #4285f4;
     box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
 }
 
-.vk-btn:hover {
+.form-social-auth .vk-btn:hover {
     border-color: #0077ff;
     box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3);
+}
+
+.form-social-auth .forgot-btn {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.form-social-auth .forgot-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
 }
 
 .social-logo {
@@ -142,7 +259,7 @@
 }
 
 .auth-divider span {
-    background: var(--bg-light);
+    background: #ffffff;
     padding: 0 15px;
     position: relative;
     z-index: 1;
@@ -160,9 +277,10 @@
 .form-input {
     width: 100%;
     padding: 15px 20px;
-    border: 2px solid var(--border-color);
+
     border-radius: 12px;
-    background: var(--bg-medium);
+    background: #ffffff;
+    border: 2px solid var(--border-color);
     color: var(--text-primary);
     font-size: 16px;
     transition: all 0.3s ease;
@@ -170,9 +288,9 @@
 }
 
 .form-input:focus {
+    background: #ffffff;
     border-color: var(--primary-color);
     box-shadow: 0 0 15px var(--shadow-primary);
-    background: var(--bg-light);
 }
 
 .form-input::placeholder {
@@ -365,11 +483,11 @@
         font-size: 28px;
     }
     
-    .social-auth {
+    .form-social-auth .social-buttons-row {
         flex-direction: column;
     }
     
-    .social-button {
+    .form-social-auth .social-button {
         justify-content: center;
     }
     
@@ -423,4 +541,36 @@
 .auth-submit-btn:focus {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
+}
+
+/* Дополнительные стили для кнопки "Забыли пароль?" в форме */
+.form-social-auth .social-button.forgot-btn {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(108, 117, 125, 0.1);
+    color: var(--text-secondary);
+    border: 2px solid var(--border-color);
+    backdrop-filter: none;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.form-social-auth .social-button.forgot-btn:hover {
+    background: rgba(108, 117, 125, 0.2);
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+    box-shadow: 0 4px 15px var(--shadow-primary);
+    transform: translateY(-2px);
 }

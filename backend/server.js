@@ -151,7 +151,7 @@ class SmartFaceitServer {
     // Запуск сервера
     start() {
         this.server = this.app.listen(this.port, () => {
-            console.log(`🚀 Smart Faceit Server запущен на порту ${this.port}`);
+            console.log(`🚀 Smart Gaming Server запущен на порту ${this.port}`);
             console.log(`📝 Режим: ${config.NODE_ENV}`);
             console.log(`🌐 API: http://localhost:${this.port}/api`);
             console.log(`🎮 Frontend: http://localhost:${this.port}`);

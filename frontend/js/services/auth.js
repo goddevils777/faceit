@@ -14,68 +14,69 @@ class AuthService {
         }
     }
 
-    // Регистрация пользователя
-    async register(userData) {
-        try {
-            // Валидация данных
-            const validation = this.validateRegistrationData(userData);
-            if (!validation.valid) {
-                throw new Error(validation.errors.join(', '));
-            }
-
-            // Хеширование пароля на фронте для безопасности
-            const hashedPassword = await this.hashPassword(userData.password);
-            
-            const registerData = {
-                username: userData.username.trim(),
-                email: userData.email.trim().toLowerCase(),
-                password: hashedPassword,
-                region: userData.region
-            };
-
-            const response = await apiService.post(CONFIG.API.ENDPOINTS.REGISTER, registerData);
-            
-            if (response.success) {
-                this.setAuthData(response.token, response.user);
-                return { success: true, user: response.user };
-            }
-            
-            throw new Error(response.message || 'Ошибка регистрации');
-        } catch (error) {
-            console.error('Registration error:', error);
-            return { success: false, error: error.message };
+   // Регистрация пользователя
+// Регистрация пользователя
+async register(userData) {
+    try {
+        // Валидация данных
+        const validation = this.validateRegistrationData(userData);
+        if (!validation.valid) {
+            throw new Error(validation.errors.join(', '));
         }
-    }
 
-    // Авторизация пользователя
-    async login(credentials) {
-        try {
-            // Валидация данных
-            if (!credentials.login || !credentials.password) {
-                throw new Error('Все поля обязательны для заполнения');
-            }
+        // НЕ хешируем пароль на фронте - отправляем как есть
+        const registerData = {
+            username: userData.username.trim(),
+            email: userData.email.trim().toLowerCase(),
+            password: userData.password, // Отправляем оригинальный пароль
+            region: userData.region
+        };
 
-            // Хеширование пароля
-            const hashedPassword = await this.hashPassword(credentials.password);
-            
-            const loginData = {
-                login: credentials.login.trim(),
-                password: hashedPassword
-            };
+        console.log('Sending registration data:', registerData);
+        const response = await apiService.post('/auth/register', registerData);
+        console.log('Registration response:', response);
 
-            const response = await apiService.post(CONFIG.API.ENDPOINTS.LOGIN, loginData);
-            
-            if (response.success) {
-                this.setAuthData(response.token, response.user);
-                return { success: true, user: response.user };
-            }
-            
-            throw new Error(response.message || 'Неверные данные входа');
-        } catch (error) {
-            console.error('Login error:', error);
-            return { success: false, error: error.message };
+        if (response.success) {
+            this.setAuthData(response.accessToken || response.token, response.user);
+            return { success: true, user: response.user };
         }
+
+        throw new Error(response.error || response.message || 'Ошибка регистрации');
+    } catch (error) {
+        console.error('Registration error:', error);
+        return { success: false, error: error.message };
     }
+}
+
+// Авторизация пользователя  
+async login(credentials) {
+    try {
+        // Валидация данных
+        if (!credentials.login || !credentials.password) {
+            throw new Error('Все поля обязательны для заполнения');
+        }
+
+        // Хеширование пароля
+        const hashedPassword = await this.hashPassword(credentials.password);
+
+        const loginData = {
+            login: credentials.login.trim(),
+            password: hashedPassword
+        };
+
+        const response = await apiService.post('/auth/login', loginData);
+
+        if (response.success) {
+            this.setAuthData(response.accessToken || response.token, response.user);
+            return { success: true, user: response.user };
+        }
+
+        throw new Error(response.error || response.message || 'Неверные данные входа');
+    } catch (error) {
+        console.error('Login error:', error);
+        return { success: false, error: error.message };
+    }
+}
 
     // Выход из системы
     logout() {
@@ -87,9 +88,9 @@ class AuthService {
     }
 
     // Проверка авторизации
-    isAuthenticated() {
-        return !!this.token && !!this.user;
-    }
+isAuthenticated() {
+    return !!this.token && !!this.user;
+}
 
     // Получение текущего пользователя
     getCurrentUser() {
@@ -164,6 +165,8 @@ class AuthService {
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
+
+    
 }
 
 // Глобальный экземпляр сервиса авторизации

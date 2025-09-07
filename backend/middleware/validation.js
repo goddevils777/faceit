@@ -288,15 +288,15 @@ class ValidationMiddleware {
             try {
                 // Определяем какие данные валидировать
                 let dataToValidate = {};
-                
+
                 if (req.body && Object.keys(req.body).length > 0) {
                     dataToValidate = { ...dataToValidate, ...req.body };
                 }
-                
+
                 if (req.params && Object.keys(req.params).length > 0) {
                     dataToValidate = { ...dataToValidate, ...req.params };
                 }
-                
+
                 if (req.query && Object.keys(req.query).length > 0) {
                     dataToValidate = { ...dataToValidate, ...req.query };
                 }
@@ -309,11 +309,16 @@ class ValidationMiddleware {
                 });
 
                 if (error) {
+                    console.log('=== VALIDATION ERROR ===');
+                    console.log('Error details:', error.details);
+
                     const errors = error.details.map(detail => ({
                         field: detail.path.join('.'),
                         message: detail.message,
                         value: detail.context?.value
                     }));
+
+                    console.log('Formatted errors:', errors);
 
                     return res.status(400).json({
                         error: 'Ошибка валидации данных',
@@ -434,7 +439,7 @@ class ValidationMiddleware {
     // Создание динамической схемы валидации
     static createDynamicSchema(fields) {
         const schemaObject = {};
-        
+
         for (const [fieldName, fieldSchema] of Object.entries(fields)) {
             schemaObject[fieldName] = fieldSchema;
         }

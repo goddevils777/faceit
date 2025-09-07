@@ -9,7 +9,7 @@ class SmartFaceitApp {
     // Инициализация приложения
     async init() {
         try {
-            console.log('Инициализация Smart Faceit...');
+            console.log('Smart Gaming успешно инициализирован');
             
             // Проверка конфигурации
             if (!window.CONFIG) {
@@ -80,12 +80,20 @@ class SmartFaceitApp {
     }
 
     // Проверка авторизации при загрузке
-    async checkAuthentication() {
-        if (AuthService.isAuthenticated()) {
-            this.currentUser = AuthService.getCurrentUser();
-            console.log('Пользователь авторизован:', this.currentUser?.username);
-        }
+// Проверка авторизации при загрузке
+async checkAuthentication() {
+    console.log('Checking authentication...');
+    console.log('window.AuthService:', window.AuthService);
+    console.log('AuthService type:', typeof AuthService);
+    console.log('AuthService.isAuthenticated:', typeof AuthService?.isAuthenticated);
+    
+    if (AuthService && typeof AuthService.isAuthenticated === 'function' && AuthService.isAuthenticated()) {
+        this.currentUser = AuthService.getCurrentUser();
+        console.log('Пользователь авторизован:', this.currentUser?.username);
+    } else {
+        console.log('Пользователь не авторизован');
     }
+}
 
     // Установка глобальных обработчиков событий
     setupEventListeners() {

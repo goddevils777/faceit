@@ -9,8 +9,13 @@ router.post('/register',
     ValidationMiddleware.validateRegister,
     AuthMiddleware.rateLimitAuth(),
     async (req, res) => {
+        console.log('=== REGISTRATION ATTEMPT ===');
+        console.log('Request body:', req.body);
+        console.log('Headers:', req.headers);
+        
         try {
             const { username, email, password, region } = req.body;
+            console.log('Extracted data:', { username, email, region, passwordLength: password?.length });
 
             // Временная заглушка - в реальном проекте здесь будет работа с БД
             const hashedPassword = await AuthMiddleware.hashPassword(password);

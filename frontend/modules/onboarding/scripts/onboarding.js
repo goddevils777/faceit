@@ -10,10 +10,10 @@ class OnboardingComponent {
     async render() {
         this.container = document.querySelector('#app') || document.body;
         this.container.innerHTML = '';
-        
+
         const onboardingHTML = this.getOnboardingHTML();
         this.container.innerHTML = onboardingHTML;
-        
+
         this.bindEvents();
         this.loadSlide(this.currentSlide);
     }
@@ -62,7 +62,7 @@ class OnboardingComponent {
         let endX = 0;
 
         const container = document.getElementById('slide-container');
-        
+
         container.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
         });
@@ -120,10 +120,10 @@ class OnboardingComponent {
     loadSlide(slideNumber) {
         const container = document.getElementById('slide-container');
         const slideData = this.getSlideData(slideNumber);
-        
+
         container.innerHTML = this.generateSlideHTML(slideData, slideNumber);
         this.updateDots(slideNumber);
-        
+
         // Привязка событий для кнопок
         this.bindSlideEvents(slideNumber);
     }
@@ -134,7 +134,7 @@ class OnboardingComponent {
             1: {
                 type: 'grid',
                 images: ['province.jpg', 'hanami.jpg', 'rust.jpg', 'sandstone.jpg'],
-                text: 'Играй на твоих любимых картах и побеждай!'
+                text: 'Играй на своих любимых картах и побеждай!'
             },
             2: {
                 type: 'single',
@@ -168,19 +168,19 @@ class OnboardingComponent {
         const buttonClass = isLastSlide ? 'start-button' : 'next-button';
 
         let imagesHTML = '';
-        
+
         if (slideData.type === 'grid') {
             imagesHTML = `
-                <div class="screenshots-grid">
-                    ${slideData.images.map(img => 
-                        `<img src="frontend/assets/images/${img}" alt="${img}" class="map-screenshot">`
-                    ).join('')}
-                </div>
-            `;
+    <div class="screenshots-grid">
+        ${slideData.images.map(img =>
+                `<img src="modules/onboarding/assets/images/${img}" alt="${img}" class="map-screenshot">`
+            ).join('')}
+    </div>
+`;
         } else {
             imagesHTML = `
-                <img src="frontend/assets/images/${slideData.image}" alt="Screenshot" class="feature-screenshot">
-            `;
+    <img src="modules/onboarding/assets/images/${slideData.image}" alt="Screenshot" class="feature-screenshot">
+`;
         }
 
         return `

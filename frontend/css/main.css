@@ -1,18 +1,40 @@
 /* Основные стили приложения */
 :root {
-    --primary-color: #ff6b35;
-    --primary-hover: #ff8c42;
-    --secondary-color: #00ff88;
-    --secondary-hover: #00cc6a;
-    --bg-dark: #0a0a0a;
-    --bg-medium: #1a1a1a;
-    --bg-light: #2a2a2a;
-    --text-primary: #ffffff;
-    --text-secondary: #cccccc;
-    --border-color: #333333;
-    --shadow-primary: rgba(255, 107, 53, 0.3);
-    --shadow-secondary: rgba(0, 255, 136, 0.3);
-    --shadow-dark: rgba(0, 0, 0, 0.8);
+    /* Основные цвета из палитры клиента */
+    --primary-color: #1971e5;      /* Синий */
+    --primary-hover: #004198;      /* Темно-синий */
+    --secondary-color: #55e79b;    /* Зеленый */
+    --secondary-hover: #84ace0;    /* Светло-синий */
+    
+    /* Светлые фоновые цвета */
+    --bg-dark: #ffffff;            /* Белый */
+    --bg-medium: #f8f9fa;          /* Светло-серый */
+    --bg-light: #e9ecef;           /* Серый */
+    
+    /* Оранжевые акценты */
+    --accent-orange: #e57f19;      /* Оранжевый */
+    --accent-orange-dark: #984c00; /* Темно-оранжевый */
+    
+    /* Темный текст для светлой темы */
+    --text-primary: #212529;       /* Темно-серый */
+    --text-secondary: #6c757d;     /* Серый */
+    --border-color: #dee2e6;       /* Светло-серый */
+    
+    /* Тени с новыми цветами */
+    --shadow-primary: rgba(25, 113, 229, 0.15);
+    --shadow-secondary: rgba(85, 231, 155, 0.15);
+    --shadow-dark: rgba(0, 0, 0, 0.1);
+}
+/* Игровые шрифты */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', 'Exo 2', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn {
+    font-family: 'Orbitron', 'Exo 2', sans-serif;
 }
 
 * {
@@ -23,7 +45,7 @@
 
 html, body {
     height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Exo 2', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-medium) 50%, #0d1421 100%);
     color: var(--text-primary);
     overflow-x: hidden;
