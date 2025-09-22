@@ -36,7 +36,7 @@ class MainMenuComponent {
                             </div>
                         </div>
                         <div class="header-actions">
-                            <button class="settings-btn" id="settings-btn">⚙️</button>
+                        
                             <button class="logout-btn" id="logout-btn">Выход</button>
                         </div>
                     </div>
@@ -71,28 +71,59 @@ class MainMenuComponent {
                 </main>
 
                 <!-- Нижняя навигация -->
-            <nav class="bottom-navigation">
-                <div class="nav-item active" data-route="/main">
-                    <span class="nav-icon">🏠</span>
-                    <span class="nav-label">Главная</span>
-                </div>
-                <div class="nav-item" data-route="/matchmaking">
-                    <span class="nav-icon">⚔️</span>
-                    <span class="nav-label">Матчи</span>
-                </div>
-                <div class="nav-item" data-route="/leaderboard">
-                    <span class="nav-icon">🏆</span>
-                    <span class="nav-label">Топ</span>
-                </div>
-                <div class="nav-item" data-route="/news">
-                    <span class="nav-icon">📰</span>
-                    <span class="nav-label">Новости</span>
-                </div>
-                <div class="nav-item" data-route="/settings">
-                    <span class="nav-icon">⚙️</span>
-                    <span class="nav-label">Настройки</span>
-                </div>
-            </nav>
+// В файле frontend/modules/main-menu/scripts/main-menu.js найти секцию:
+<!-- Нижняя навигация -->
+<nav class="bottom-navigation">
+    <div class="nav-container">
+        <div class="nav-item active" data-route="/main">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="m9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="nav-label">Главная</span>
+        </div>
+<div class="nav-item" data-route="/matchmaking">
+    <span class="nav-icon">
+        <img src="modules/main-menu/assets/icon2.png" alt="Матчи" style="width: 100%; height: 100%; object-fit: contain;">
+    </span>
+    <span class="nav-label">Матчи</span>
+</div>
+<div class="nav-item" data-route="/leaderboard">
+    <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2z" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 22V12" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 6.5L12 12L4 6.5" stroke="currentColor" stroke-width="2"/>
+        </svg>
+    </span>
+    <span class="nav-label">Топ</span>
+</div>
+        <div class="nav-item" data-route="/news">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 14h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 6h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 10h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 14h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="nav-label">Новости</span>
+        </div>
+        <div class="nav-item" data-route="/settings">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </span>
+            <span class="nav-label">Настройки</span>
+        </div>
+    </div>
+</nav>
             </div>
         `;
     }

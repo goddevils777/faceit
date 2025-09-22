@@ -21,15 +21,12 @@ class OnboardingComponent {
     // Получение HTML структуры
     getOnboardingHTML() {
         return `
-            <div class="onboarding-wrapper">
-                <div class="onboarding-container" id="slide-container">
-                    <!-- Слайды загружаются динамически -->
-                </div>
-                <div class="onboarding-dots">
-                    ${this.generateDots()}
-                </div>
+        <div class="onboarding-wrapper">
+            <div class="onboarding-container" id="slide-container">
+                <!-- Слайды загружаются динамически -->
             </div>
-        `;
+        </div>
+    `;
     }
 
     // Генерация точек навигации
@@ -132,10 +129,60 @@ class OnboardingComponent {
     getSlideData(slideNumber) {
         const slides = {
             1: {
-                type: 'grid',
-                images: ['province.jpg', 'hanami.jpg', 'rust.jpg', 'sandstone.jpg'],
-                text: 'Играй на своих любимых картах и побеждай!'
-            },
+    type: 'custom',
+    content: `
+        <div class="onboarding-logo">
+            <img src="modules/onboarding/assets/images/logo.png" alt="SF Logo">
+        </div>
+        
+        <h1 class="slide-title">Добро пожаловать!</h1>
+        
+        <div class="league-block"></div>
+        <div class="league-title">Default League</div>
+        <div class="league-stats">Матчей сыграно: 5/10</div>
+        
+        <div class="match-card match-card-1" style="background-image: url('modules/onboarding/assets/images/province.png')">
+            <div class="match-result">LOSE</div>
+        </div>
+        <div class="match-info match-info-1">
+            <div class="match-map">Province</div>
+            <div class="match-date">23.11.2025 17:38</div>
+        </div>
+        
+        <div class="match-card match-card-2 win" style="background-image: url('modules/onboarding/assets/images/province.png')">
+            <div class="match-result win">WIN</div>
+        </div>
+        <div class="match-info match-info-2">
+            <div class="match-map">Hanami</div>
+            <div class="match-date">22.11.2025 15:22</div>
+        </div>
+        
+        <div class="match-card match-card-3" style="background-image: url('modules/onboarding/assets/images/province.png')">
+            <div class="match-result">LOSE</div>
+        </div>
+        <div class="match-info match-info-3">
+            <div class="match-map">Rust</div>
+            <div class="match-date">21.11.2025 19:45</div>
+        </div>
+        
+        <div class="match-card match-card-4 win" style="background-image: url('modules/onboarding/assets/images/province.png')">
+            <div class="match-result win">WIN</div>
+        </div>
+        <div class="match-info match-info-4">
+            <div class="match-map">Sandstone</div>
+            <div class="match-date">20.11.2025 14:12</div>
+        </div>
+        
+        <div class="match-card match-card-5 draw" style="background-image: url('modules/onboarding/assets/images/province.png')">
+    <div class="match-result draw">DRAW</div>
+</div>
+<div class="match-info match-info-5">
+    <div class="match-map">District</div>
+    <div class="match-date">19.11.2025 16:33</div>
+</div>`,
+    text: 'Играй на своих любимых картах! А по окончанию калибровки получи уровень!'
+},
+            // остальные слайды остаются как есть...
             2: {
                 type: 'single',
                 image: 'top-rating.jpg',
@@ -164,34 +211,39 @@ class OnboardingComponent {
     // Генерация HTML слайда
     generateSlideHTML(slideData, slideNumber) {
         const isLastSlide = slideNumber === this.totalSlides;
-        const buttonText = isLastSlide ? 'Начать игру!' : 'Дальше';
+        const buttonText = isLastSlide ? 'Начать игру!' : 'Далее';
         const buttonClass = isLastSlide ? 'start-button' : 'next-button';
 
         let imagesHTML = '';
 
-        if (slideData.type === 'grid') {
+        if (slideData.type === 'custom') {
+            imagesHTML = slideData.content;
+        } else if (slideData.type === 'grid') {
             imagesHTML = `
-    <div class="screenshots-grid">
-        ${slideData.images.map(img =>
+<div class="screenshots-grid">
+    ${slideData.images.map(img =>
                 `<img src="modules/onboarding/assets/images/${img}" alt="${img}" class="map-screenshot">`
             ).join('')}
-    </div>
-`;
+</div>`;
         } else {
             imagesHTML = `
-    <img src="modules/onboarding/assets/images/${slideData.image}" alt="Screenshot" class="feature-screenshot">
-`;
+<img src="modules/onboarding/assets/images/${slideData.image}" alt="Screenshot" class="feature-screenshot">`;
         }
 
         return `
-            <div class="onboarding-slide">
-                <div class="slide-content">
-                    ${imagesHTML}
-                    <p class="slide-text">${slideData.text}</p>
-                </div>
-                <button class="${buttonClass}" id="slide-button">${buttonText}</button>
+        <div class="onboarding-slide">
+            <div class="slide-content">
+                ${imagesHTML}
+                <p class="slide-description">${slideData.text}</p>
             </div>
-        `;
+            <button class="${buttonClass}" id="slide-button">${buttonText}</button>
+            
+            <!-- Пагинация внутри слайда -->
+            <div class="onboarding-dots">
+                ${this.generateDots()}
+            </div>
+        </div>
+    `;
     }
 
     // Привязка событий слайда

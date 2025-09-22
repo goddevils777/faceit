@@ -1,53 +1,338 @@
-/* Стили компонента онбординга */
+/* Новые стили онбординга - исправленная версия */
 .onboarding-wrapper {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    background: #FF2D2D;
     padding: 20px;
+    box-sizing: border-box;
 }
 
+/* Основной блок - увеличенный размер (360x640 -> 450x800) */
 .onboarding-container {
-    width: 90%;
-    max-width: 550px;
-    height: 80vh;
-    background: #ffffff;
-    border: 2px solid var(--primary-color);
-    border-radius: 20px;
-    box-shadow: 0 0 30px var(--shadow-primary), 0 10px 30px var(--shadow-dark);
-    overflow: hidden;
+    width: 450px;
+    height: 800px;
+    background: radial-gradient(50% 50% at 50% 50%, #1C1414 0%, #1C1111 100%);
+    border-radius: 25px;
     position: relative;
+    overflow: hidden;
 }
 
+/* Внутренняя рамка - увеличенная */
+.onboarding-container::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 434px;
+    height: 784px;
+    border-radius: 20px;
+    border: 4px solid #E57F19;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Слайд контейнер */
 .onboarding-slide {
     width: 100%;
     height: 100%;
-    padding: 40px 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
+    position: relative;
+    z-index: 2;
     animation: slideIn 0.4s ease-out;
 }
 
-.slide-content {
-    flex-grow: 1;
+/* Логотип SF - увеличенные позиции */
+.onboarding-logo {
+    position: absolute;
+    top: 50px;
+    left: 183px;
+    width: 84px;
+    height: 84px;
+}
+
+.onboarding-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Заголовок "Добро пожаловать!" - адаптированный (58px * 0.4 = 23px) */
+.slide-title {
+    position: absolute;
+    top: 208px;
+    left: 20px;
+    right: 20px;
+    height: 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 100%;
+    letter-spacing: -2%;
+    text-align: center;
+    color: #FFFFFF;
+    margin: 0;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
+}
+
+/* Фон блока с картами - увеличенный */
+.league-block {
+    position: absolute;
+    top: 352px;
+    left: 31px;
+    width: 388px;
+    height: 188px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+/* Default League - адаптированный (35px * 0.4 = 14px) */
+.league-title {
+    position: absolute;
+    top: 363px;
+    left: 47px;
+    width: auto;
+    height: 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: -2%;
+    text-align: center;
+    color: #FFFFFF;
+    margin: 0;
+    display: flex;
     align-items: center;
 }
 
-/* Сетка скриншотов для первого слайда */
+/* Матчей сыграно - адаптированный (23px * 0.4 = 9px) - ИСПРАВЛЕННЫЙ ЦВЕТ */
+.league-stats {
+    position: absolute;
+    top: 385px;
+    left: 48px;
+    width: auto;
+    height: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    line-height: 100%;
+    letter-spacing: -2%;
+    text-align: center;
+    color: #9E9E9E;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Карточки матчей - увеличенные */
+.match-card {
+    position: absolute;
+    width: 62px;
+    height: 50px;
+    border-radius: 4px;
+    border: 1px solid #998844;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Позиции карточек - увеличенные */
+.match-card-1 { top: 421px; left: 47px; }
+.match-card-2 { top: 421px; left: 120px; }
+.match-card-3 { top: 421px; left: 193px; }
+.match-card-4 { top: 421px; left: 266px; }
+.match-card-5 { top: 421px; left: 339px; }
+
+/* WIN карточки - зеленая обводка */
+.match-card.win {
+    border-color: #55E79B;
+}
+
+/* DRAW карточки - синяя обводка */
+.match-card.draw {
+    border-color: #84ACE0;
+}
+
+/* Результат матча - базовые стили только для LOSE */
+.match-result {
+    position: absolute;
+    top: 18px;
+    left: 16px;
+    width: 30px;
+    height: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 100%;
+    letter-spacing: -2%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    background: none;
+    color: #998844;
+}
+
+/* WIN стили - полностью отдельные */
+.onboarding-container .match-result.win {
+    background: none !important;
+    background-color: rgba(0,0,0,0) !important;
+    background-image: none !important;
+    color: #55E79B !important;
+    position: absolute !important;
+    top: 18px !important;
+    left: 16px !important;
+    width: 30px !important;
+    height: 14px !important;
+}
+
+/* DRAW стили - полностью отдельные */
+.onboarding-container .match-result.draw {
+    background: none !important;
+    background-color: rgba(0,0,0,0) !important;
+    background-image: none !important;
+    color: #84ACE0 !important;
+    position: absolute !important;
+    top: 18px !important;
+    left: 16px !important;
+    width: 30px !important;
+    height: 14px !important;
+}
+
+/* Контейнеры для подписей под карточками - увеличенные */
+.match-info-1 { position: absolute; top: 475px; left: 47px; width: 62px; }
+.match-info-2 { position: absolute; top: 475px; left: 120px; width: 62px; }
+.match-info-3 { position: absolute; top: 475px; left: 193px; width: 62px; }
+.match-info-4 { position: absolute; top: 475px; left: 266px; width: 62px; }
+.match-info-5 { position: absolute; top: 475px; left: 339px; width: 62px; }
+
+/* Province - адаптированный (15px * 0.4 = 6px) - ИСПРАВЛЕННЫЙ ЦВЕТ */
+.match-map {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 6px;
+    line-height: 100%;
+    letter-spacing: -2%;
+    text-align: center;
+    color: #777777;
+    margin: 3px 0 2px 0;
+}
+
+/* Дата - адаптированный (10px * 0.4 = 4px) - ИСПРАВЛЕННЫЙ ЦВЕТ */
+.match-date {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 4px;
+    line-height: 100%;
+    letter-spacing: -2%;
+    text-align: center;
+    color: #777777;
+    margin: 0;
+}
+
+/* Текст описания - адаптированный (38px * 0.4 = 15px) */
+.slide-description {
+    position: absolute;
+    top: 630px;
+    left: 22px;
+    width: 406px;
+    height: 38px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 100%;
+    letter-spacing: -2%;
+    text-align: center;
+    color: #FFFFFF;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Кнопка "Далее" - адаптированный (48px * 0.4 = 19px) */
+.next-button, .start-button {
+    position: absolute;
+    top: 700px;
+    left: 48px;
+    width: 354px;
+    height: 42px;
+    background: #E57F19;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 100%;
+    letter-spacing: -2%;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.next-button:hover, .start-button:hover {
+    background: #d16d0a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(229, 127, 25, 0.4);
+}
+
+/* Навигация - точки - ВИДИМЫЕ и внутри блока */
+.onboarding-dots {
+    position: absolute;
+    top: 753px;
+    left: 207px;
+    display: flex;
+    gap: 4px;
+    z-index: 3;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #8E8E8E;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: #D9D9D9;
+}
+
+/* Анимация появления */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Вспомогательные классы для старых слайдов */
+.slide-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
 .screenshots-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
-    margin-bottom: 30px;
     width: 100%;
+    max-width: 300px;
+    margin: 100px auto;
 }
 
 .map-screenshot {
@@ -55,181 +340,15 @@
     height: 120px;
     border-radius: 10px;
     object-fit: cover;
-    border: 2px solid var(--primary-color);
-    box-shadow: 0 0 15px var(--shadow-primary);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid #E57F19;
 }
 
-.map-screenshot:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(255, 107, 53, 0.6);
-}
-
-/* Одиночный скриншот */
 .feature-screenshot {
-    width: 100%;
-    height: 280px;
+    width: 300px;
+    height: 200px;
     border-radius: 15px;
     object-fit: cover;
-    margin-bottom: 30px;
-    border: 2px solid var(--primary-color);
-    box-shadow: 0 0 20px var(--shadow-primary);
-    transition: transform 0.3s ease;
+    border: 2px solid #E57F19;
+    margin: 100px auto;
+    display: block;
 }
-
-.feature-screenshot:hover {
-    transform: scale(1.02);
-}
-
-/* Текст слайда */
-.slide-text {
-    font-size: 18px;
-    color: var(--text-primary);
-    line-height: 1.5;
-    font-weight: 600;
-    font-family: 'Exo 2', sans-serif;
-    text-shadow: none;
-    margin: 0;
-}
-
-
-/* Кнопки */
-.next-button,
-.start-button {
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    overflow: hidden;
-}
-
-.next-button {
-    background: linear-gradient(145deg, var(--primary-color) 0%, var(--primary-hover) 100%);
-    color: white;
-    box-shadow: 0 4px 15px var(--shadow-primary);
-}
-
-.next-button:hover {
-    background: linear-gradient(145deg, var(--primary-hover) 0%, var(--primary-color) 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px var(--shadow-primary);
-}
-
-.start-button {
-    background: linear-gradient(145deg, var(--secondary-color) 0%, var(--secondary-hover) 100%);
-    color: #000;
-    box-shadow: 0 4px 15px var(--shadow-secondary);
-    padding: 18px 40px;
-    font-size: 18px;
-}
-
-.start-button:hover {
-    background: linear-gradient(145deg, var(--secondary-hover) 0%, var(--secondary-color) 100%);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px var(--shadow-secondary);
-}
-
-.start-button:active,
-.next-button:active {
-    transform: translateY(-1px);
-}
-
-/* Точки навигации */
-.onboarding-dots {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(108, 117, 125, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.dot.active {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-    box-shadow: 0 0 10px var(--shadow-primary);
-}
-
-.dot:hover {
-    background: var(--primary-color);
-    transform: scale(1.2);
-}
-
-/* Анимации */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-/* Адаптивность */
-@media (max-width: 480px) {
-    .onboarding-container {
-        width: 95%;
-        height: 85vh;
-    }
-
-    .onboarding-slide {
-        padding: 30px 20px;
-    }
-
-    .screenshots-grid {
-        gap: 10px;
-    }
-
-    .map-screenshot {
-        height: 100px;
-    }
-
-    .feature-screenshot {
-        height: 240px;
-    }
-
-    .slide-text {
-        font-size: 16px;
-    }
-
-    .next-button,
-    .start-button {
-        padding: 12px 25px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 320px) {
-    .map-screenshot {
-        height: 80px;
-    }
-
-    .feature-screenshot {
-        height: 200px;
-    }
-
-    .slide-text {
-        font-size: 14px;
-    }
-}
-
